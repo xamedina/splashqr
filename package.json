@@ -9,16 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.5.1",
+    "@supabase/supabase-js": "^2.45.4",
+    "nanoid": "^5.0.7",
+    "next": "14.2.15",
+    "qrcode-generator": "^1.4.4",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.15"
+    "stripe": "^16.12.0"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.15"
+    "eslint-config-next": "14.2.15",
+    "typescript": "^5"
   }
 }
