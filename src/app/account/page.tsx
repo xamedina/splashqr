@@ -7,10 +7,10 @@ export const metadata = { title: 'Account · SplashQR' };
 const NAMES = { free: 'Free', starter: 'Starter', pro: 'Pro' } as const;
 
 export default async function AccountPage() {
-  const { user, profile, ent } = await requireUser('/account');
+  const { user, profile, ent, pastDue } = await requireUser('/account');
   const paid = profile?.plan && profile.plan !== 'free';
   return (
-    <AppShell active="account" ent={ent}>
+    <AppShell active="account" ent={ent} pastDue={pastDue}>
       <div className="wrap">
         <div className="page-head"><div><h1>Account</h1><p className="muted">{user.email}</p></div></div>
         <div className="panel" style={{ display: 'grid', gap: 14, maxWidth: 640 }}>

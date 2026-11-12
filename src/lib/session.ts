@@ -9,5 +9,5 @@ export async function requireUser(next = '/dashboard') {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect(`/login?next=${encodeURIComponent(next)}`);
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single<Profile>();
-  return { supabase, user, profile, ent: entitlements(profile) };
+  return { supabase, user, profile, ent: entitlements(profile), pastDue: profile?.subscription_status === 'past_due' };
 }

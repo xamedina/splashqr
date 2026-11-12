@@ -23,7 +23,7 @@ export default async function PricingPage({ searchParams }: { searchParams: { er
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single<Profile>();
   const ent = entitlements(profile);
   return (
-    <AppShell active="pricing" ent={ent}>
+    <AppShell active="pricing" ent={ent} pastDue={profile?.subscription_status === 'past_due'}>
       <div className="wrap">{setupNote}<PricingPlans signedIn current={profile?.plan === 'free' ? null : profile?.plan ?? null} /></div>
     </AppShell>
   );

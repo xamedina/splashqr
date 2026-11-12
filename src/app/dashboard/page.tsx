@@ -9,7 +9,7 @@ export const metadata = { title: 'My codes · SplashQR' };
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage({ searchParams }: { searchParams: { upgraded?: string } }) {
-  const { supabase, user, ent } = await requireUser('/dashboard');
+  const { supabase, user, ent, pastDue } = await requireUser('/dashboard');
   const { data: codes } = await supabase.from('codes').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
   const list = (codes ?? []) as CodeRow[];
   const since = new Date(Date.now() - 60 * 86400000).toISOString();
@@ -22,7 +22,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
   }
   const editable = editableIds(list, ent);
   return (
-    <AppShell active="codes" ent={ent}>
+    <AppShell active="codes" ent={ent} pastDue={pastDue}>
       <Dashboard codes={list.map(c => ({ ...c, frozen: c.mode === 'dynamic' && !editable.has(c.id) }))} scans={scans} ent={ent}
         siteUrl={SITE_URL} upgraded={searchParams.upgraded === '1'} />
     </AppShell>

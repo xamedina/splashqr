@@ -7,8 +7,11 @@ create table if not exists public.profiles (
   trial_ends_at timestamptz default (now() + interval '14 days'),
   stripe_customer_id text,
   stripe_subscription_id text,
+  subscription_status text,   -- copied from Stripe: active, past_due, canceled...
   created_at timestamptz not null default now()
 );
+
+alter table public.profiles add column if not exists subscription_status text;
 
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public as $$

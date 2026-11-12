@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     client_reference_id: user.id,
     line_items: [{ price, quantity: 1 }],
     allow_promotion_codes: true,
-    subscription_data: { metadata: { user_id: user.id } },
+    subscription_data: { metadata: { user_id: user.id }, billing_mode: { type: 'flexible' } },
     success_url: `${origin}/dashboard?upgraded=1`,
     cancel_url: `${origin}/pricing`,
   });
