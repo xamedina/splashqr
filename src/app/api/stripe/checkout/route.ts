@@ -18,8 +18,14 @@ export async function POST(req: NextRequest) {
 
   const s = stripe();
   const db = createAdminClient();
-  const { data: profile } = await db.from('profiles').select('stripe_customer_id').eq('id', user.id).single();
+  const { data: profile } = await db.from('profiles').select('stripe_customer_id, stripe_subscription_id').eq('id', user.id).single();
   let customer = profile?.stripe_customer_id as string | null;
+
+  // Already subscribed: change plans in Stripe's billing page instead of starting a second subscription.
+  if (customer && profile?.stripe_subscription_id) {
+    const portal = await s.billingPortal.sessions.create({ customer, return_url: `${origin}/account` });
+    return NextResponse.redirect(portal.url, 303);
+  }
   if (!customer) {
     customer = (await s.customers.create({ email: user.email, metadata: { user_id: user.id } })).id;
     await db.from('profiles').update({ stripe_customer_id: customer }).eq('id', user.id);
